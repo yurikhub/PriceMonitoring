@@ -25,13 +25,7 @@ namespace PriceMonitoring
                 Console.WriteLine("No internet conection!");
                 Console.ReadKey();
             }
-            catch (System.IO.FileNotFoundException ex)
-            {
-                Console.WriteLine($"{ex.Message} \nAngleSharp.dll not found");
-                Console.ReadKey();
-            }
-
-
+           
         }
     }
 }
