@@ -15,26 +15,28 @@ namespace PriceMonitoring.Models
 
             // Creating sheet Буча
             Console.WriteLine("Creating sheet Буча...");
-            var workSheet = app.Worksheets.Add();
-            workSheet.Name = "Буча";
-            // Create table title
-            CreateTableTitle(workSheet);
-            // Create rows
-            CreateRows(buildingsBucha, workSheet);
+            var listNameBucha = "Буча";
+            CreateSheet(buildingsBucha, app, listNameBucha);
 
-            // Creating sheet Ірпінь
+            //// Creating sheet Ірпінь
             Console.WriteLine("Creating sheet Ірпінь...");
-            var workSheet2 = app.Worksheets.Add();
-            workSheet2.Name = "Ірпінь";
-            // Create table title
-            CreateTableTitle(workSheet2);
-            // Create rows
-            CreateRows(buildingsIrpen, workSheet2);
+            var listNameIrpin = "Ірпінь";
+            CreateSheet(buildingsIrpen, app, listNameIrpin);
 
             // Save and close
             doc.SaveAs($@"{Environment.CurrentDirectory}\info_{DateTime.Now.ToShortDateString()}.xlsx");
             doc.Close();
             app.Quit();
+        }
+
+        private static void CreateSheet(IEnumerable<Building> buildingsBucha, Application app, string listName)
+        {
+            var workSheet = app.Worksheets.Add();
+            // Create table title
+            workSheet.Name = listName;
+            CreateTableTitle(workSheet);
+            // Create rows
+            CreateRows(buildingsBucha, workSheet);
         }
 
         private static void CreateTableTitle(dynamic workSheet)
@@ -63,10 +65,10 @@ namespace PriceMonitoring.Models
                 workSheet.Cells[row, "F"] = item.UpdateDate;
                 workSheet.Cells[row, "G"] = item.CurrentDate;
             }
-            
+
             workSheet.Range["A1", $"G{row}"].AutoFormat(XlRangeAutoFormat.xlRangeAutoFormatTable10,
                 true, false, true, true, true, true);
-           
+
         }
     }
 }
