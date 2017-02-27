@@ -16,9 +16,9 @@ namespace PriceMonitoring.Models
         public DownloadDom()
         {
             // Download site DOM  Bucha Buildings
-            DocumentListBucha = DownloadSiteDom(Source.SourсeListBucha);
+            DocumentListBucha = DownloadSiteDom(Source.SourсeListBucha());
             // Download site DOM  Irpin Buildings
-            DocumentListIrpin = DownloadSiteDom(Source.SourсeListIrpin);
+            DocumentListIrpin = DownloadSiteDom(Source.SourсeListIrpin());
         }
 
         private static List<IHtmlDocument> DownloadSiteDom(IEnumerable<string> sourceList)
@@ -34,17 +34,18 @@ namespace PriceMonitoring.Models
                     var downloadResult = webClient.DownloadString(item);
                     var document = htmlParser.Parse(downloadResult);
                     var resultFindList = document.QuerySelectorAll("a.no-decor");
-                    siteList.AddRange(resultFindList.Select(item2 => $"https://novostroyki.lun.ua{item2.GetAttribute("href")}"));
+                    siteList.AddRange(resultFindList.Select(x => $"https://novostroyki.lun.ua{x.GetAttribute("href")}"));
                     // download site DOM
-                    foreach (var item3 in siteList)
+                    foreach (var siteaddress in siteList)
                     {
-                        var downloadResult2 = webClient.DownloadString(item3);
+                        var downloadResult2 = webClient.DownloadString(siteaddress);
                         documentList.Add(htmlParser.Parse(downloadResult2));
                         Console.OutputEncoding = Encoding.UTF8;
-                        Console.WriteLine($"Site {item3}........ok!");
+                        Console.WriteLine($"Site {siteaddress}........ok!");
                     }
                 }
             }
+
             return documentList;
         }
     }
