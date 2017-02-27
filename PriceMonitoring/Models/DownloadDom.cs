@@ -15,19 +15,15 @@ namespace PriceMonitoring.Models
 
         public DownloadDom()
         {
-            // Download site DOM  Bucha
-            var documentListBucha = new List<IHtmlDocument>();
-            DownloadSiteDom(documentListBucha, Source.SourсeListBucha);
-            DocumentListBucha = documentListBucha;
-            // Download site DOM  Irpin
-            var documentListIrpin = new List<IHtmlDocument>();
-            DownloadSiteDom(documentListIrpin, Source.SourсeListIrpin);
-            DocumentListIrpin = documentListIrpin;
+            // Download site DOM  Bucha Buildings
+            DocumentListBucha = DownloadSiteDom(Source.SourсeListBucha);
+            // Download site DOM  Irpin Buildings
+            DocumentListIrpin = DownloadSiteDom(Source.SourсeListIrpin);
         }
 
-        private static void DownloadSiteDom(ICollection<IHtmlDocument> documentList, IEnumerable<string> sourceList)
+        private static List<IHtmlDocument> DownloadSiteDom(IEnumerable<string> sourceList)
         {
-            var counter = 1;
+            var documentList = new List<IHtmlDocument>();
             foreach (var item in sourceList)
             {
                 var htmlParser = new HtmlParser();
@@ -49,6 +45,7 @@ namespace PriceMonitoring.Models
                     }
                 }
             }
+            return documentList;
         }
     }
 }
